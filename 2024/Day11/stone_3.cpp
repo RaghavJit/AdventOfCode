@@ -32,7 +32,7 @@ pair<bool, int> numDivisor(unsigned long long x) {
     return make_pair(false, 1);
 }
 
-vector<unsigned long long> getBlink(vector<unsigned long long> initial, unordered_map<int,int> &memorize_2024, unordered_map<int,pair<int,int>> &memorize_split){
+vector<unsigned long long> getBlink(vector<unsigned long long> initial){
     vector<unsigned long long> result;
 
     for(int i=0; i<initial.size(); i++){
@@ -43,17 +43,11 @@ vector<unsigned long long> getBlink(vector<unsigned long long> initial, unordere
         
         pair<bool,int> divisor = numDivisor(initial[i]);
         if(divisor.first){
-            if(memorize_split.count(initial[i]) == 0){
-                memorize_split[initial[i]] = make_pair(initial[i]/divisor.second, initial[i]%divisor.second);
-            }
-            result.push_back(memorize_split[initial[i]].first);
-            result.push_back(memorize_split[initial[i]].second);
+            result.push_back(initial[i]/divisor.second);
+            result.push_back(initial[i]%divisor.second);
         }
         else {
-            if(memorize_2024.count(initial[i]) == 0){
-                memorize_2024[initial[i]] = initial[i]*2024;
-            }
-            result.push_back(memorize_2024[initial[i]]);
+            result.push_back(initial[i]*2024);
         }
     }
     return result;
@@ -65,17 +59,10 @@ int main(){
     unordered_map<int,int> memorize_2024;
     unordered_map<int,pair<int,int>> memorize_split;
 
-//    int GrandTotal = 0;
-//    for(int i=0; i<initial.size(); i++){
-//        vector<unsigned long long> single;
-//        single.push_back(initial[i]);
 
-        for(int j=0; j<BLINKS; j++){
-            initial = getBlink(initial, memorize_2024, memorize_split);
-        }
-//        GrandTotal += single.size();
-//    }
-//
-//    cout<<GrandTotal<<endl;
+    for(int j=0; j<BLINKS; j++){
+        initial = getBlink(initial);
+    }
+
     cout<<initial.size()<<endl;
 }
